@@ -22,6 +22,7 @@ TOKEN AnaLex(FILE *fd){
     char digitos[TAM_NUM] = "";
     int tamD = 0;
     int pr = 0;
+    char ascii;
 
     TOKEN t;
 
@@ -53,6 +54,9 @@ TOKEN AnaLex(FILE *fd){
                         estado = 4;
                         digitos[tamD] = c;
                         digitos[++tamD] = '\0';
+                    }
+                    else if(c == '\''){
+                        estado = 9;
                     }
                     else
                         error("Caracter inválido!");
@@ -92,6 +96,9 @@ TOKEN AnaLex(FILE *fd){
                         lexema[tamL] = c;
                         lexema[++tamL] = '\0';
                     }
+                    else{
+                        error("Caracter inválido!");
+                    }
                     break;
             case 4: 
                     if(c >= '0' && c <= '9'){
@@ -118,6 +125,9 @@ TOKEN AnaLex(FILE *fd){
                         digitos[tamD] = c;
                         digitos[++tamD] = '\0';
                     }
+                    else{
+                        error("Caracter inválido!");
+                    }
                     break;
             case 7:
                     if(c >= '0' && c <= '9'){
@@ -131,6 +141,42 @@ TOKEN AnaLex(FILE *fd){
                         t.cat = REALCON;
                         t.valReal = atof(digitos);
                         return t;
+                    }
+                    break;
+            case 9:
+                    if(c == '\\'){
+                        estado = 11;
+                    }
+                    else if((isprint(c) != 0) && (c != '\'')){
+                        estado = 10;
+                        ascii = c;
+                    }
+                    else{
+                        error("Caracter inválido!");
+                    }
+                    break;
+            case 10:
+                    if(c == '\''){
+                        estado = 13;
+                        t.cat = CHARCON;
+                        t.caracter = ascii;
+                        return t;
+                    }
+                    else{
+                        error("Caracter inválido!");
+                    }
+                    break;
+            case 11:
+                    if(c == 'n' || c == '0'){
+                        estado = 10;
+                        if(c == 'n'){
+                            ascii = '\n';
+                        }else{
+                            ascii = '\0';
+                        }
+                    }
+                    else{
+                        error("Caracter inválido!");
                     }
                     break;
         }
@@ -157,6 +203,8 @@ int main() {
             case INTCON: printf("<INTCON, %d> ", tk.valInt);
                     break;
             case REALCON: printf("<REALCON, %g> ", tk.valReal);
+                    break;
+            case CHARCON: printf("<CHARCON, %c> ", tk.caracter);
                     break;
             case FIM_ARQ: printf("<Fim do arquivo encontrado>\n");
         }
