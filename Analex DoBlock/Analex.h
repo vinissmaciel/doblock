@@ -10,9 +10,11 @@ char *palavras_reservadas[] = {"const", "block", "main", "endblock",
 
 enum TOKEN_CAT {ID=1, SN, CHARCON, REALCON, INTCON, STRINGCON, PR, FIM_ARQ};  /* Onde: ID: Identificador, SN: Sinal; etc */
 
-enum SINAIS {ATRIB = 1, ADICAO, SUBTRACAO, MULTIPLIC, DIVISAO, ABRE_PAR, FECHA_PAR}; // Sinais válidos da linguagem 
+enum SINAIS {ATRIB = 1, ADICAO, SUBTRACAO, MULTIPLIC, DIVISAO, ABRE_PAR, FECHA_PAR, NOT, DIFERENTE, MENOR_Q, MENOR_IGUAL, MAIOR_Q, MAIOR_IGUAL, IGUAL, 
+            E_COMERCIAL, AND, OR, ABRE_CHAVE, FECHA_CHAVE, ABRE_COLC, FECHA_COLC, VIRGULA}; // Sinais válidos da linguagem 
 
-enum PALAVRAS_RESERVADAS {CONST, BLOCK, MAIN, ENDBLOCK, CHAR, INT, REAL, BOOL, WITH, DO, VARYING, FROM, TO, DOWNTO, WHILE, FOR, TIMES, IF, ELSEIF, ELSE, ENDIF, ENDWHILE, GOBACK}; // Códigos das palavras reservadas
+enum PALAVRAS_RESERVADAS {CONST, BLOCK, MAIN, ENDBLOCK, CHAR, INT, REAL, BOOL, WITH, DO, VARYING, FROM, TO, DOWNTO, WHILE, FOR, TIMES, IF, ELSEIF, ELSE, ENDIF, 
+                        ENDWHILE, GOBACK}; // Códigos das palavras reservadas
 
 enum NLBARRA0 {BARRA_N = 10, BARRA_0 = 0}; // ascii do '\n' e '\0'
 

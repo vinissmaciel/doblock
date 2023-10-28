@@ -66,6 +66,66 @@ TOKEN AnaLex(FILE *fd){
                         estado = 17;
                         string[tamL] = '\0';
                     }
+                    else if(c == '*'){
+                        estado = 21;
+                        t.cat = SN;
+                        t.codigo = MULTIPLIC;
+                        return t;
+                    }
+                    else if(c == '-'){
+                        estado = 20;
+                        t.cat = SN;
+                        t.codigo = SUBTRACAO;
+                        return t;
+                    }
+                    else if(c == '+'){
+                        estado = 23;
+                        t.cat = SN;
+                        t.codigo = ADICAO;
+                        return t;
+                    }
+                    else if(c == ','){
+                        estado = 46;
+                        t.cat = SN;
+                        t.codigo = VIRGULA;
+                        return t;
+                    }
+                    else if(c == '['){
+                        estado = 44;
+                        t.cat = SN;
+                        t.codigo = ABRE_COLC;
+                        return t;
+                    }
+                    else if(c == ']'){
+                        estado = 47;
+                        t.cat = SN;
+                        t.codigo = FECHA_COLC;
+                        return t;
+                    }
+                    else if(c == '{'){
+                        estado = 41;
+                        t.cat = SN;
+                        t.codigo = ABRE_CHAVE;
+                        return t;
+                    }
+                    else if(c == '}'){
+                        estado = 43;
+                        t.cat = SN;
+                        t.codigo = FECHA_CHAVE;
+                        return t;
+                    }
+                    else if(c == '('){
+                        estado = 42;
+                        t.cat = SN;
+                        t.codigo = ABRE_PAR;
+                        return t;
+                    }
+                    else if(c == ')'){
+                        estado = 40;
+                        t.cat = SN;
+                        t.codigo = FECHA_PAR;
+                        return t;
+                    }
                     else{
                         error("Caracter inválido!");
                     }
@@ -270,15 +330,40 @@ int main() {
             case REALCON: printf("<REALCON, %g> ", tk.valReal);
                     break;
             case CHARCON: switch (tk.caracter){
-                                case 10: printf("<CHARCON, \'\\n\'> ");
+                                case BARRA_N: printf("<CHARCON, \'\\n\'> ");
                                         break;
-                                case 0: printf("<CHARCON, \'\\0\'> ");
+                                case BARRA_0: printf("<CHARCON, \'\\0\'> ");
                                         break;
                                 default: printf("<CHARCON, \'%c\'> ", tk.caracter);
                             }
                         break;
             case STRINGCON: printf("<STRINGCON, \"%s\"> ", tk.string);
                     break;
+            case SN: switch (tk.codigo){
+                                case ADICAO: printf("<SN, ADICAO> ");
+                                        break;
+                                case SUBTRACAO: printf("<SN, SUBTRACAO> ");
+                                        break;
+                                case DIVISAO: printf("<SN, DIVISAO> ");
+                                        break;
+                                case MULTIPLIC: printf("<SN, MULTIPLICACAO> ");
+                                        break;
+                                case VIRGULA: printf("<SN, VIRGULA> ");
+                                        break;
+                                case ABRE_CHAVE: printf("<SN, ABRE_CHAVES> ");
+                                        break;
+                                case FECHA_CHAVE: printf("<SN, FECHA_CHAVES> ");
+                                        break;
+                                case ABRE_PAR: printf("<SN, ABRE_PARENTESES> ");
+                                        break;
+                                case FECHA_PAR: printf("<SN, FECHA_PARENTESES> ");
+                                        break;
+                                case ABRE_COLC: printf("<SN, ABRE_COLCHETES> ");
+                                        break;
+                                case FECHA_COLC: printf("<SN, FECHA_COLCHETES> ");
+                                        break;
+                            }
+                        break;
             case FIM_ARQ: printf("<Fim do arquivo encontrado>\n");
         }
         if (tk.cat == FIM_ARQ) break;
