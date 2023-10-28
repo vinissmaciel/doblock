@@ -20,9 +20,10 @@ TOKEN AnaLex(FILE *fd){
     char lexema[TAM_LEXEMA] = "";
     int tamL = 0;
     char digitos[TAM_NUM] = "";
+    char string[TAM_MAX_STRING] = "";
     int tamD = 0;
-    int pr = 0;
-    char ascii;
+    int pr = 0, indexpr;
+    char caracter;
 
     TOKEN t;
 
@@ -58,8 +59,16 @@ TOKEN AnaLex(FILE *fd){
                     else if(c == '\''){
                         estado = 9;
                     }
-                    else
+                    else if(c == '/'){
+                        estado = 14;
+                    }
+                    else if(c == '\"'){
+                        estado = 17;
+                        string[tamL] = '\0';
+                    }
+                    else{
                         error("Caracter inválido!");
+                    }
                     break;
             case 1:
                     if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '_')){
@@ -72,16 +81,18 @@ TOKEN AnaLex(FILE *fd){
 
                         for (int i = 0; i < NUM_PR; i++){ // VERIFICA SE É PR
                             if(strcmp(palavras_reservadas[i], lexema) == 0){
-                                pr=1;
+                                pr = 1;
+                                indexpr = i;
                             }
                         }
 
                         if(pr==0){
                             t.cat = ID;
+                            strcpy(t.lexema, lexema);
                         }else{
                             t.cat = PR;
+                            t.codigo = indexpr;
                         }
-                        strcpy(t.lexema, lexema);
                         return t;
                     }
                     break;
@@ -149,7 +160,7 @@ TOKEN AnaLex(FILE *fd){
                     }
                     else if((isprint(c) != 0) && (c != '\'')){
                         estado = 10;
-                        ascii = c;
+                        caracter = c;
                     }
                     else{
                         error("Caracter inválido!");
@@ -159,7 +170,7 @@ TOKEN AnaLex(FILE *fd){
                     if(c == '\''){
                         estado = 13;
                         t.cat = CHARCON;
-                        t.caracter = ascii;
+                        t.caracter = caracter;
                         return t;
                     }
                     else{
@@ -168,14 +179,61 @@ TOKEN AnaLex(FILE *fd){
                     break;
             case 11:
                     if(c == 'n' || c == '0'){
-                        estado = 10;
+                        estado = 12;
                         if(c == 'n'){
-                            ascii = '\n';
+                            caracter = BARRA_N;
                         }else{
-                            ascii = '\0';
+                            caracter = BARRA_0;
                         }
                     }
                     else{
+                        error("Caracter inválido!");
+                    }
+                    break;
+            case 12:
+                    if(c == '\''){
+                        estado = 16;
+                        t.cat = CHARCON;
+                        t.caracter = caracter;
+                        return t;
+                    }
+                    else{
+                        error("Caracter inválido!");
+                    }
+                    break;
+            case 14:
+                    if(c == '/'){
+                        estado = 15;
+                    }
+                    else{
+                        estado = 24;
+                        ungetc(c, fd);
+                        t.cat = SN;
+                        t.codigo = DIVISAO;
+                        return t;
+                    }
+                    break;
+            case 15:
+                    if(c == '\n'){
+                        ungetc(c, fd);
+                        estado = 0;
+                    }
+                    else{
+                        estado = 15;
+                    }
+                    break;
+            case 17:
+                    if(isprint(c) != 0 && c != '\"'){
+                        estado = 17;
+                        string[tamL] = c;
+                        string[++tamL] = '\0';
+                    }
+                    else if(c == '\"'){
+                        estado = 18;
+                        t.cat = STRINGCON;
+                        strcpy(t.string, string);
+                        return t;
+                    }else{
                         error("Caracter inválido!");
                     }
                     break;
@@ -198,13 +256,28 @@ int main() {
         switch (tk.cat) {
             case ID: printf("<ID, %s> ", tk.lexema);
                     break;
-            case PR: printf("<PR, %s> ", tk.lexema);
+            case PR:  
+                    printf("<PR, ");
+                    int i = 0;
+                    while((palavras_reservadas[tk.codigo])[i]){
+                        putchar(toupper((palavras_reservadas[tk.codigo])[i])); // ROTINA PARA DEIXAR STRING MAISCULA
+                        i++;
+                    }
+                    printf("> ");
                     break;
             case INTCON: printf("<INTCON, %d> ", tk.valInt);
                     break;
             case REALCON: printf("<REALCON, %g> ", tk.valReal);
                     break;
-            case CHARCON: printf("<CHARCON, %c> ", tk.caracter);
+            case CHARCON: switch (tk.caracter){
+                                case 10: printf("<CHARCON, \'\\n\'> ");
+                                        break;
+                                case 0: printf("<CHARCON, \'\\0\'> ");
+                                        break;
+                                default: printf("<CHARCON, \'%c\'> ", tk.caracter);
+                            }
+                        break;
+            case STRINGCON: printf("<STRINGCON, \"%s\"> ", tk.string);
                     break;
             case FIM_ARQ: printf("<Fim do arquivo encontrado>\n");
         }
