@@ -126,6 +126,24 @@ TOKEN AnaLex(FILE *fd){
                         t.codigo = FECHA_PAR;
                         return t;
                     }
+                    else if(c == '!'){
+                        estado = 22;
+                    }
+                    else if(c == '<'){
+                        estado = 25;
+                    }
+                    else if(c == '>'){
+                        estado = 27;
+                    }
+                    else if(c == '='){
+                        estado = 33;
+                    }
+                    else if(c == '&'){
+                        estado = 36;
+                    }
+                    else if(c == '|'){
+                        estado = 38;
+                    }
                     else{
                         error("Caracter inválido!");
                     }
@@ -297,6 +315,92 @@ TOKEN AnaLex(FILE *fd){
                         error("Caracter inválido!");
                     }
                     break;
+            case 22:
+                    if(c == '='){
+                        estado = 32;
+                        t.cat = SN;
+                        t.codigo = DIFERENTE;
+                        return t;
+                    }
+                    else{
+                        estado = 31;
+                        ungetc(c, fd);
+                        t.cat = SN;
+                        t.codigo = NOT;
+                        return t;
+                    }
+                    break;
+            case 25:
+                    if(c == '='){
+                        estado = 28;
+                        t.cat = SN;
+                        t.codigo = MENOR_IGUAL;
+                        return t;
+                    }
+                    else{
+                        estado = 26;
+                        ungetc(c, fd);
+                        t.cat = SN;
+                        t.codigo = MENOR_Q;
+                        return t;
+                    }
+                    break;
+            case 27:
+                    if(c == '='){
+                        estado = 30;
+                        t.cat = SN;
+                        t.codigo = MAIOR_IGUAL;
+                        return t;
+                    }
+                    else{
+                        estado = 29;
+                        ungetc(c, fd);
+                        t.cat = SN;
+                        t.codigo = MAIOR_Q;
+                        return t;
+                    }
+                    break;
+            case 33:
+                    if(c == '='){
+                        estado = 35;
+                        t.cat = SN;
+                        t.codigo = IGUAL;
+                        return t;
+                    }
+                    else{
+                        estado = 34;
+                        ungetc(c, fd);
+                        t.cat = SN;
+                        t.codigo = ATRIB;
+                        return t;
+                    }
+                    break;
+            case 36:
+                    if(c == '&'){
+                        estado = 37;
+                        t.cat = SN;
+                        t.codigo = AND;
+                        return t;
+                    }
+                    else{
+                        estado = 45;
+                        ungetc(c, fd);
+                        t.cat = SN;
+                        t.codigo = E_COMERCIAL;
+                        return t;
+                    }
+                    break;
+            case 38:
+                    if(c == '|'){
+                        estado = 39;
+                        t.cat = SN;
+                        t.codigo = OR;
+                        return t;
+                    }
+                    else{
+                        error("Caracter inválido!");
+                    }
+                    break;
         }
     }
 }
@@ -361,6 +465,28 @@ int main() {
                                 case ABRE_COLC: printf("<SN, ABRE_COLCHETES> ");
                                         break;
                                 case FECHA_COLC: printf("<SN, FECHA_COLCHETES> ");
+                                        break;
+                                case DIFERENTE: printf("<SN, DIFERENTE> ");
+                                        break;
+                                case NOT: printf("<SN, NOT> ");
+                                        break;
+                                case MENOR_IGUAL: printf("<SN, MENOR_IGUAL> ");
+                                        break;
+                                case MENOR_Q: printf("<SN, MENOR_QUE> ");
+                                        break;
+                                case MAIOR_IGUAL: printf("<SN, MAIOR_IGUAL> ");
+                                        break;
+                                case MAIOR_Q: printf("<SN, MAIOR_QUE> ");
+                                        break;
+                                case IGUAL: printf("<SN, IGUAL> ");
+                                        break;
+                                case ATRIB: printf("<SN, ATRIBUICAO> ");
+                                        break;
+                                case AND: printf("<SN, AND> ");
+                                        break;
+                                case E_COMERCIAL: printf("<SN, &> ");
+                                        break;
+                                case OR: printf("<SN, OR> ");
                                         break;
                             }
                         break;
