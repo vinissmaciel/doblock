@@ -169,7 +169,7 @@ TOKEN AnaLex(FILE *fd){
                             strcpy(t.lexema, lexema);
                         }else{
                             t.cat = PR;
-                            t.codigo = indexpr;
+                            t.codigo = indexpr; // SE FOR PR, ATRIBUI O CODIGO DE ACORDO COM INDEX
                         }
                         return t;
                     }
@@ -292,7 +292,7 @@ TOKEN AnaLex(FILE *fd){
                     }
                     break;
             case 15:
-                    if(c == '\n'){
+                    if(c == '\n'){              // ACABOU COMENTÁRIO, VOLTA PRO ESTADO 0
                         ungetc(c, fd);
                         estado = 0;
                     }

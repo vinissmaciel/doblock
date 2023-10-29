@@ -25,9 +25,9 @@ typedef
             int codigo; // para tokens das categorias SN e PR 
             char lexema[TAM_MAX_LEXEMA];    // cadeia de caractares que corresponde o nome do token da cat. ID
             int valInt; // valor da constante inteira em tokens da cat. INTCON
-            char string[TAM_MAX_STRING]; 
-            float valReal;
-            char caracter;
+            char string[TAM_MAX_STRING]; // strings para token da cat. STRINGCON
+            float valReal; // valor da constante real em tokens da cat. REALCON
+            char caracter; // caracter da constate char da cat. CHARCON
         }; 
 } TOKEN;    // Tipo TOKEN 
 
