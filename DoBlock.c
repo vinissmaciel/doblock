@@ -12,6 +12,7 @@
 TOKEN t;
 TOKEN lookahead;
 FILE *fd;
+FILE *fd_out;
 int contLinha;
 TAB_IDENTIF tabIdentif;
 
@@ -19,7 +20,7 @@ TAB_IDENTIF tabIdentif;
 void TestaAnalex() {
     
     if ((fd=fopen("codigo.dat", "r")) == NULL) 
-        erro("Arquivo de entrada do código nao encontrado!"); 
+        erro(2); 
 
     printf("LINHA %d: ", contLinha);
     while(1){
@@ -110,7 +111,10 @@ void TestaAnalex() {
 
 void TestaAnasint() {
     if ((fd=fopen("codigo.dat", "r")) == NULL)
-        erro("Arquivo de entrada do código nao encontrado!");
+        erro(2);
+
+    if ((fd_out=fopen("codigo.obj", "w")) == NULL)
+      erro(41);
 
     IniciaTabIdentif();
   
@@ -121,7 +125,7 @@ void TestaAnasint() {
     }
     Prog();
     if (t.cat==FIM_ARQ)
-        printf("\nCódigo fonte sintaticamente correto!\n");
+        printf("\nCódigo fonte sintaticamente correto! Código objeto gerado!\n");
     else {
       printf("%d\n", t.cat);
       if(t.cat == ID){
@@ -130,10 +134,11 @@ void TestaAnasint() {
         printf("%s\n", palavras_reservadas[t.codigo]);
       }
       printf("%d", contLinha);
-      erro("Erro de sintaxe!");
+      erro(1);
     }
   
     fclose(fd);
+    fclose(fd_out);
 }
 
 int main() {
@@ -147,11 +152,11 @@ int main() {
   printf("Lookahead não deixa testar léxico e sintático ao mesmo tempo por causa do bool primVez");
 
   contLinha = 1;
-  printf("\n\n[Análise Sintática ----------------]\n");
+  printf("\n\n[Análise Sintática e TDS ----------------]\n");
   TestaAnasint();
 
   for(int i=0; i<tabIdentif.tamTab; i++){
     REG_IDENTIF ident = tabIdentif.identificador[i];
-    printf("\n\nnomeId: %s\nEndereço: %d\ncatId: %d\nescopo: %d\ntipo: %d\nisConst: %d\nzombie: %d\nref: %d\ndimensões: %d\nparametros: %d", ident.nomeId, ident.ender, ident.catId, ident.escopo, ident.tipo, ident.isConst, ident.zombie, ident.ref, ident.dimensoes, ident.parametros);
+    printf("\n\nnomeId: %s\nEndereço: %d\ncatId: %d\nescopo: %d\ntipo: %d\nisConst: %d\nzombie: %d\nref: %d\ndimensões: %d\nparametros: %d\ndefinido: %d\ntamdim_1: %d\ntamdim_2: %d\ntamdim_3: %d\nvalorInt: %d\nvalorReal: %f\nvalorChar: %c\nvalorString: %s\nlabel: %s\n", ident.nomeId, ident.ender, ident.catId, ident.escopo, ident.tipo, ident.isConst, ident.zombie, ident.ref, ident.dimensoes, ident.parametros, ident.def, ident.tam_dim1, ident.tam_dim2, ident.tam_dim3, ident.valorInt, ident.valorReal, ident.valorChar, ident.valorString, ident.label);
   }
 }

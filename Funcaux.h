@@ -4,8 +4,12 @@
 #include <stdbool.h>
 
 extern int contLinha;
+extern char *msgs_erro[];
+extern char label[];
 
-void erro(char msg[]);
-void erroanasint(char msg[]);
+void erro(int i);
+void erroanasint(int i);
+void errosemantico(int i);
+void gera_label();
 
 #endif

@@ -164,7 +164,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         estado = 38;
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 1:
@@ -205,7 +205,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         lexema[++tamL] = '\0';
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 4: 
@@ -234,7 +234,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         digitos[++tamD] = '\0';
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 7:
@@ -260,7 +260,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         caracter = c;
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 10:
@@ -271,7 +271,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         return t;
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 11:
@@ -284,7 +284,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         }
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 12:
@@ -295,7 +295,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         return t;
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 14:
@@ -331,7 +331,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         strcpy(t.string, string);
                         return t;
                     }else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
             case 22:
@@ -417,7 +417,7 @@ TOKEN AnaLexTLA(FILE *fd){
                         return t;
                     }
                     else{
-                        erro("Caracter inválido!");
+                        erro(0);
                     }
                     break;
         }

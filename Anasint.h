@@ -12,6 +12,7 @@ extern TOKEN t;
 extern TOKEN lookahead;
 extern TAB_IDENTIF tabIdentif;
 extern FILE *fd;
+extern FILE *fd_out;
 extern int contLinha;
 
 /* Assinaturas das funcoes */

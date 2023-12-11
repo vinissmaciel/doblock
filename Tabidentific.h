@@ -6,6 +6,8 @@
 #include "Analex.h"
 
 #define TAM_MAX_TAB_IDENTIF 200
+#define TAM_MAX_LABEL 20
+#define TAM_MAX_PARAMS 20
 
 enum IDENTIF_CAT {VG = 0, VL, BLK, ARG};
 
@@ -23,8 +25,17 @@ typedef
       bool isConst;
       bool zombie;
       bool ref;
-      int dimensoes; // 0, 1, 2...
+      int dimensoes; // 0, 1, 2... MAXIMO 3
+      int tam_dim1;
+      int tam_dim2;
+      int tam_dim3;
       int parametros; // 0, 1, 2...
+      bool def; 
+      int valorInt;
+      float valorReal;
+      char valorChar;
+      char valorString[TAM_MAX_STRING];
+      char label[TAM_MAX_LABEL];
   } REG_IDENTIF;                      // Uma entrada na Tabela de Identificadores
 
 
@@ -44,10 +55,14 @@ extern TAB_IDENTIF tabIdentif;
 void IniciaTabIdentif();
 int BuscaTabIdetif(char []);
 int BuscaTabIdetifBlk(char []);
+int BuscaTabIdetifVAR(char []);
 int InsereTabIdentif(char [], int, int, int, bool, bool, bool, int, int);
+int BuscaTabIdetifPorEscopo(char [], int);
 void EditaQtdParams(char [], int);
 void EditaNomeArg(char [], int);
-void ExcluiVL(char []);
+void ExcluiVL();
+void ZombieARG(char []);
+void BlkDefinido(char []);
 
 
 #endif // _TAB_IDENTIFIC_

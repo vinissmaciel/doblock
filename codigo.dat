@@ -8,16 +8,16 @@ block main
 
   int mat[DIM_LIN][DIM_COL] 
   int i 
-  
+
   do Para_Cada_Lin with mat, i  
   varying i from 0 to DIM_LIN-1 
 
 endblock 
 
-block Para_Cada_Lin with int m[DIM_LIN][DIM_COL], int l 
+block Para_Cada_Lin with int m[DIM_LIN][DIM_COL], int l
 
   int c 
-  
+
   do Para_Cada_Col with m, l, c  
   varying c from 0 to DIM_COL-1 
 
